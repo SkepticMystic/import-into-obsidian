@@ -1,4 +1,11 @@
 ## Changelog
+### [0.0.5](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.4...0.0.5) (2022-01-07)
+
+
+### Documentation
+
+* :memo: Update Readme ([6f58f96](https://github.com/SkepticMystic/import-into-obsidian/commit/6f58f962642135f117eb64dd36c96ea3044105d1))
+
 ### [0.0.4](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.3...0.0.4) (2022-01-07)
 
 
