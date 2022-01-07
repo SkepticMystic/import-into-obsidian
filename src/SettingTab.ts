@@ -25,5 +25,17 @@ export class SettingTab extends PluginSettingTab {
 					await plugin.saveSettings();
 				};
 			});
+		new Setting(containerEl)
+			.setName("List Delimiter")
+			.setDesc(
+				"The character used to split up lists of items in a single cell."
+			)
+			.addText((text) => {
+				text.setValue(settings.listDelimiter);
+				text.inputEl.onblur = async () => {
+					settings.listDelimiter = text.getValue();
+					await plugin.saveSettings();
+				};
+			});
 	}
 }
