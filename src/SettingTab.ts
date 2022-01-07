@@ -1,10 +1,10 @@
 import { App, PluginSettingTab } from "obsidian";
-import MyPlugin from "./main";
+import ImportPlugin from "./main";
 
 export class SettingTab extends PluginSettingTab {
-  plugin: MyPlugin;
+  plugin: ImportPlugin;
 
-  constructor(app: App, plugin: MyPlugin) {
+  constructor(app: App, plugin: ImportPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }

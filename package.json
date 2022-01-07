@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "import-into-obsidian",
 	"version": "0.0.1",
-	"description": "This is a sample plugin for Obsidian.",
+	"description": "Import data into Obsidian",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
