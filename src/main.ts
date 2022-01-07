@@ -65,6 +65,41 @@ export default class ImportPlugin extends Plugin {
 			`${content}${content.length ? "\n" : ""}${append}`
 		);
 	}
+
+	toMDField(key: string, val: string, listQ = false) {
+		if (listQ) return `${key}:: [${val}]`;
+		return `${key}:: ${val}`;
+	}
+
+	parseCell(field: string, cell: Cell) {
+		const { listDelimiter } = this.settings;
+
+		if (typeof cell === "string") {
+			if (cell.includes(listDelimiter))
+				return [this.toMDField(field, cell, true)];
+			else return [this.toMDField(field, cell, false)];
+		} else {
+			return Object.keys(cell).map((subF) =>
+				this.toMDField(field + "." + subF, cell[subF])
+			);
+		}
+	}
+
+	rowToStr(row: Row): string {
+		const { listDelimiter, fileColumnName } = this.settings;
+		const cols = Object.keys(row);
+
+		let output = "";
+		for (const col of cols) {
+			if (col === fileColumnName) continue;
+			const cell = row[col];
+			const pairs = this.parseCell(col, cell);
+
+			output += pairs.join("\n") + "\n";
+		}
+
+		return output;
+	}
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},
