@@ -106,7 +106,7 @@
 		</div>
 		<div class="non-existings">
 			<h3
-				aria-label="No exact match or daily note was found for these files"
+				aria-label="No exact match or daily note was found for these files. A new note will be created."
 			>
 				Non-existing Files
 			</h3>
