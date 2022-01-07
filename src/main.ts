@@ -1,8 +1,14 @@
 import helper from "csvtojson";
 import { DateTime } from "luxon";
 import { normalizePath, Plugin, TFile } from "obsidian";
-import { DEFAULT_SETTINGS } from "./const";
-import { Cell, Row, Settings } from "./interfaces";
+import { BreakdownModal } from "./BreakdownModal";
+import {
+	DEFAULT_SETTINGS,
+	FILE_DATED,
+	FILE_EXISTING,
+	FILE_NON_EXISTING,
+} from "./const";
+import { Cell, FileChange, Row, Settings } from "./interfaces";
 import { SettingTab } from "./SettingTab";
 import { selectFile } from "./utils";
 
@@ -15,8 +21,8 @@ export default class ImportPlugin extends Plugin {
 
 		this.addCommand({
 			id: "import-data",
-			name: "Import data",
-			callback: async () => await this.importData(),
+			name: "Import Data",
+			callback: async () => new BreakdownModal(this.app, this).open(),
 		});
 	}
 
@@ -29,21 +35,23 @@ export default class ImportPlugin extends Plugin {
 		return await parser.fromString(csv).then((json) => json);
 	}
 
-	getCorrespondingFile(name: string): TFile | null {
+	getCorrespondingFile(input: string): FileChange {
 		const { app } = this;
-		const firstLinkPath = app.metadataCache.getFirstLinkpathDest(name, "");
+		const firstLinkPath = app.metadataCache.getFirstLinkpathDest(input, "");
 
-		if (firstLinkPath) return firstLinkPath;
-		const date = DateTime.fromISO(name);
+		if (firstLinkPath)
+			return { input, file: firstLinkPath, type: FILE_EXISTING };
+		const date = DateTime.fromISO(input);
 		if (date) {
 			const dateFile = app.vault
 				.getMarkdownFiles()
-				.find((file) => file.basename.includes(name));
+				.find((file) => file.basename.includes(input));
 
-			if (date) return dateFile;
+			if (dateFile) return { input, file: dateFile, type: FILE_DATED };
+			else return { input, file: null, type: FILE_NON_EXISTING };
 		}
 
-		return null;
+		return { input, file: null, type: FILE_NON_EXISTING };
 	}
 
 	async createNewMDFile(currFile: TFile, basename: string, content: string) {
