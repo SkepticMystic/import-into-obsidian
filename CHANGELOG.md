@@ -1,4 +1,11 @@
 ## Changelog
+### [0.0.4](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.3...0.0.4) (2022-01-07)
+
+
+### Documentation
+
+* **BreakdownModal:** :memo: Better description of missing files ([7bf94c6](https://github.com/SkepticMystic/import-into-obsidian/commit/7bf94c65e095bc6ed1432e05347362405aa35239))
+
 ### [0.0.3](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.2...0.0.3) (2022-01-07)
 
 
