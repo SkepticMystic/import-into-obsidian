@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { Link } from "obsidian-dataview";
 import { DEFAULT_SETTINGS } from "./const";
 import { Settings } from "./interfaces";
 import { SettingTab } from "./SettingTab";
@@ -13,6 +13,7 @@ export default class ImportPlugin extends Plugin {
 
 	onunload() {}
 
+		Record<string, string | number | string[] | number[] | DateTime | Link>
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},

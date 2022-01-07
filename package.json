@@ -30,6 +30,7 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
+		"@types/luxon": "^2.0.8",
 		"@types/node": "^16.11.1",
 		"esbuild": "^0.13.12",
 		"obsidian": "^0.12.17",
@@ -37,5 +38,9 @@
 		"tslib": "2.3.1",
 		"typescript": "4.4.4"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"csvtojson": "^2.0.10",
+		"luxon": "^2.3.0",
+		"obsidian-dataview": "^0.4.21"
+	}
 }
