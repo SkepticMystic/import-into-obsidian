@@ -1,11 +1,10 @@
-import { Plugin, TFile } from "obsidian";
-import { Link } from "obsidian-dataview";
-import { DEFAULT_SETTINGS } from "./const";
-import { Settings } from "./interfaces";
-import { SettingTab } from "./SettingTab";
-import { selectFile } from "./utils";
 import helper from "csvtojson";
 import { DateTime } from "luxon";
+import { normalizePath, Plugin, TFile } from "obsidian";
+import { DEFAULT_SETTINGS } from "./const";
+import { Cell, Row, Settings } from "./interfaces";
+import { SettingTab } from "./SettingTab";
+import { selectFile } from "./utils";
 
 export default class ImportPlugin extends Plugin {
 	settings: Settings;
@@ -13,15 +12,17 @@ export default class ImportPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 		this.addSettingTab(new SettingTab(this.app, this));
+
+		this.addCommand({
+			id: "import-data",
+			name: "Import data",
+			callback: async () => await this.importData(),
+		});
 	}
 
 	onunload() {}
 
-	async parseCSV(
-		file: File
-	): Promise<
-		Record<string, string | number | string[] | number[] | DateTime | Link>
-	> {
+	async parseCSV(file: File): Promise<Row[]> {
 		const csv = await file.text();
 		const parser = helper();
 
@@ -100,6 +101,29 @@ export default class ImportPlugin extends Plugin {
 
 		return output;
 	}
+
+	async importData() {
+		const { fileColumnName } = this.settings;
+		const file = await selectFile(".csv", false);
+		if (!file) return;
+
+		const json = await this.parseCSV(file[0]);
+		console.log(json);
+
+		json.forEach(async (row: { [col: string]: Cell }) => {
+			const fileName = row[fileColumnName] as string;
+			const file = this.getCorrespondingFile(fileName);
+
+			const toAppend = this.rowToStr(row);
+			if (file) {
+				this.appendToFile(file, toAppend);
+			} else {
+				const currFile = this.app.workspace.getActiveFile();
+				this.createNewMDFile(currFile, fileName, toAppend);
+			}
+		});
+	}
+
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},
