@@ -1,1 +1,3 @@
-export interface Settings {}
+export interface Settings {
+	fileColumnName: string;
+}
