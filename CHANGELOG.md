@@ -1,4 +1,11 @@
 ## Changelog
+### [0.0.3](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.2...0.0.3) (2022-01-07)
+
+
+### Features
+
+* **ImportData:** :sparkles: Option to avoid importing nested.fields ([437f75c](https://github.com/SkepticMystic/import-into-obsidian/commit/437f75c595f0dd7d645dad36512e4237e346912d))
+
 ### 0.0.2 (2022-01-07)
 
 
