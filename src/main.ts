@@ -44,6 +44,27 @@ export default class ImportPlugin extends Plugin {
 
 		return null;
 	}
+
+	async createNewMDFile(currFile: TFile, basename: string, content: string) {
+		const { app } = this;
+		const newFileParent = app.fileManager.getNewFileParent(
+			currFile?.path ?? ""
+		);
+
+		await app.vault.create(
+			normalizePath(`${newFileParent.path}/${basename}.md`),
+			content
+		);
+	}
+
+	async appendToFile(file: TFile, append: string) {
+		const { app } = this;
+		const content = await app.vault.read(file);
+		await app.vault.modify(
+			file,
+			`${content}${content.length ? "\n" : ""}${append}`
+		);
+	}
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},
