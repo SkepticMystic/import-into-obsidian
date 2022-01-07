@@ -1,8 +1,11 @@
+import { Plugin, TFile } from "obsidian";
 import { Link } from "obsidian-dataview";
 import { DEFAULT_SETTINGS } from "./const";
 import { Settings } from "./interfaces";
 import { SettingTab } from "./SettingTab";
+import { selectFile } from "./utils";
 import helper from "csvtojson";
+import { DateTime } from "luxon";
 
 export default class ImportPlugin extends Plugin {
 	settings: Settings;
@@ -23,6 +26,23 @@ export default class ImportPlugin extends Plugin {
 		const parser = helper();
 
 		return await parser.fromString(csv).then((json) => json);
+	}
+
+	getCorrespondingFile(name: string): TFile | null {
+		const { app } = this;
+		const firstLinkPath = app.metadataCache.getFirstLinkpathDest(name, "");
+
+		if (firstLinkPath) return firstLinkPath;
+		const date = DateTime.fromISO(name);
+		if (date) {
+			const dateFile = app.vault
+				.getMarkdownFiles()
+				.find((file) => file.basename.includes(name));
+
+			if (date) return dateFile;
+		}
+
+		return null;
 	}
 	async loadSettings() {
 		this.settings = Object.assign(
