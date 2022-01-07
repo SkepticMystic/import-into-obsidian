@@ -4,6 +4,7 @@ import { FILE_EXISTING, FILE_DATED, FILE_NON_EXISTING } from "./const";
 export interface Settings {
 	fileColumnName: string;
 	listDelimiter: string;
+	importNestedFields: boolean;
 }
 
 export type Cell = string | Record<string, any>;

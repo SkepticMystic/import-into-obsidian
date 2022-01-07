@@ -37,5 +37,18 @@ export class SettingTab extends PluginSettingTab {
 					await plugin.saveSettings();
 				};
 			});
+		new Setting(containerEl)
+			.setName("Import Nested Fields")
+			.setDesc(
+				"A nested field is something like `foods.apple`. Toggle this off to avoid importing these fields."
+			)
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.importNestedFields)
+					.onChange(async (val) => {
+						settings.importNestedFields = val;
+						await plugin.saveSettings();
+					});
+			});
 	}
 }

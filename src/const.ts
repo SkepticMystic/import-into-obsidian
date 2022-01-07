@@ -3,6 +3,7 @@ import { Settings } from "./interfaces";
 export const DEFAULT_SETTINGS: Settings = {
 	fileColumnName: "file",
 	listDelimiter: ",",
+	importNestedFields: true,
 };
 
 export const FILE_EXISTING = "existing-file";

@@ -81,17 +81,17 @@ export default class ImportPlugin extends Plugin {
 	}
 
 	parseCell(field: string, cell: Cell) {
-		const { listDelimiter } = this.settings;
+		const { listDelimiter, importNestedFields } = this.settings;
 
 		if (typeof cell === "string") {
 			if (cell.includes(listDelimiter))
 				return [this.toMDField(field, cell, true)];
 			else return [this.toMDField(field, cell, false)];
-		} else {
+		} else if (importNestedFields) {
 			return Object.keys(cell).map((subF) =>
 				this.toMDField(field + "." + subF, cell[subF])
 			);
-		}
+		} else return [];
 	}
 
 	rowToStr(row: Row): string {
@@ -104,7 +104,7 @@ export default class ImportPlugin extends Plugin {
 			const cell = row[col];
 			const pairs = this.parseCell(col, cell);
 
-			output += pairs.join("\n") + "\n";
+			output += pairs.join("\n") + (pairs.length ? "\n" : "");
 		}
 
 		return output;
