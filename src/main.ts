@@ -102,7 +102,7 @@ export default class ImportPlugin extends Plugin {
 		return output;
 	}
 
-	async importData() {
+	async prepareBreakdown() {
 		const { fileColumnName } = this.settings;
 		const file = await selectFile(".csv", false);
 		if (!file) return;
@@ -110,9 +110,26 @@ export default class ImportPlugin extends Plugin {
 		const json = await this.parseCSV(file[0]);
 		console.log(json);
 
-		json.forEach(async (row: { [col: string]: Cell }) => {
+		const fileChanges = json.map((row) => {
 			const fileName = row[fileColumnName] as string;
-			const file = this.getCorrespondingFile(fileName);
+			return this.getCorrespondingFile(fileName);
+		});
+
+		return { json, fileChanges };
+	}
+
+	async importData(json: Row[], selectedFiles: FileChange[]) {
+		const { fileColumnName } = this.settings;
+
+		json.forEach(async (row) => {
+			const fileName = row[fileColumnName] as string;
+			const fileChange = selectedFiles.find(
+				(change) => change.input === fileName
+			);
+
+			// Then file wasn't selected
+			if (!fileChange) return;
+			const { file } = fileChange;
 
 			const toAppend = this.rowToStr(row);
 			if (file) {

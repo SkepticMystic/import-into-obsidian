@@ -40,8 +40,10 @@
 	},
 	"dependencies": {
 		"csvtojson": "^2.0.10",
+		"esbuild-svelte": "^0.6.1",
 		"luxon": "^2.3.0",
 		"obsidian-community-lib": "^1.4.1",
-		"obsidian-dataview": "^0.4.21"
+		"obsidian-dataview": "^0.4.21",
+		"svelte-preprocess": "^4.10.1"
 	}
 }
