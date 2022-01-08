@@ -1,4 +1,11 @@
 ## Changelog
+### [0.0.6](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.5...0.0.6) (2022-01-08)
+
+
+### Features
+
+* **MergeSuperchargedLinks:** :sparkles: Use SuperchargedLinks preset fields to merge column occurances under a given parent field ([ff4d5b4](https://github.com/SkepticMystic/import-into-obsidian/commit/ff4d5b4eb2b63f51abb9db59498385ba0ac92123))
+
 ### [0.0.5](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.4...0.0.5) (2022-01-07)
 
 
