@@ -5,6 +5,8 @@ export interface Settings {
 	fileColumnName: string;
 	listDelimiter: string;
 	importNestedFields: boolean;
+	mergeSuperchargedLinks: boolean;
+	makeWiki: boolean;
 }
 
 export type Cell = string | Record<string, any>;
@@ -19,4 +21,18 @@ export interface FileChange {
 	input: string;
 	file: TFile;
 	type: FileType;
+}
+
+export interface PresetField {
+	id: string;
+	isCycle: boolean;
+	isMulti: boolean;
+	name: string;
+	values: { [id: number]: string };
+	valuesListNotePath: string;
+}
+
+export interface SuperchargedField {
+	name: string;
+	values: string[];
 }

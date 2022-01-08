@@ -50,5 +50,30 @@ export class SettingTab extends PluginSettingTab {
 						await plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl)
+			.setName("Merge Fields Using Supercharged-Links Lists")
+			.setDesc(
+				"Supercharged Links allows you to give a list of predefined values to a field. This will merge the values into a single list."
+			)
+			.addToggle((toggle) => {
+				toggle
+					.setValue(settings.mergeSuperchargedLinks)
+					.onChange(async (val) => {
+						settings.mergeSuperchargedLinks = val;
+						await plugin.saveSettings();
+					});
+			});
+		new Setting(containerEl)
+			.setName("Make Merged Fields Wikilinks")
+			.setDesc(
+				"For the fields that get merged under Supercharged Links fields, should they be [[wikilinks]], or just the original cell value?"
+			)
+			.addToggle((toggle) => {
+				toggle.setValue(settings.makeWiki).onChange(async (val) => {
+					settings.makeWiki = val;
+					await plugin.saveSettings();
+				});
+			});
 	}
 }

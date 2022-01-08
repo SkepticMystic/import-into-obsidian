@@ -4,6 +4,8 @@ export const DEFAULT_SETTINGS: Settings = {
 	fileColumnName: "file",
 	listDelimiter: ",",
 	importNestedFields: true,
+	mergeSuperchargedLinks: false,
+	makeWiki: true,
 };
 
 export const FILE_EXISTING = "existing-file";
