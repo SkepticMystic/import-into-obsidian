@@ -135,6 +135,10 @@ export default class ImportPlugin extends Plugin {
 
 	makeWiki = (input: string) =>
 		this.settings.makeWiki ? `[[${input}]]` : input;
+	dropWiki = (input: string) =>
+		input.startsWith("[[") && input.endsWith("]]")
+			? input.slice(2, -2)
+			: input;
 
 	rowToStr(row: Row): string {
 		const { superchargedFields } = this;
@@ -150,7 +154,11 @@ export default class ImportPlugin extends Plugin {
 
 			if (superchargedFields && typeof cell === "string") {
 				const scField = superchargedFields.find(
-					(field) => field && field.values.includes(col)
+					(field) =>
+						field &&
+						field.values
+							.map((val) => this.dropWiki(val))
+							.includes(col)
 				);
 				if (scField) {
 					if (cell === "true" || cell === "1") {
