@@ -1,4 +1,11 @@
 ## Changelog
+### [0.0.7](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.6...0.0.7) (2022-01-09)
+
+
+### Fixes
+
+* **MergeSuperchargedLinks:** :bug: Drop wikilinks when checking if field has a parent ([64c3450](https://github.com/SkepticMystic/import-into-obsidian/commit/64c3450a27f4cb24207ea4f458e0ae2f4574ae10))
+
 ### [0.0.6](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.5...0.0.6) (2022-01-08)
 
 
