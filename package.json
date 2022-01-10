@@ -1,6 +1,6 @@
 {
 	"name": "import-into-obsidian",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "Import data into Obsidian",
 	"main": "main.js",
 	"scripts": {
