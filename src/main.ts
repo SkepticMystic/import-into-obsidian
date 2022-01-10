@@ -140,7 +140,7 @@ export default class ImportPlugin extends Plugin {
 			? input.slice(2, -2)
 			: input;
 
-	rowToStr(row: Row): string {
+	rowToStr(row: Row, selectedCols: string[]): string {
 		const { superchargedFields } = this;
 		const { fileColumnName } = this.settings;
 		const cols = Object.keys(row);
@@ -148,9 +148,8 @@ export default class ImportPlugin extends Plugin {
 		const toMerge: { [parent: string]: string[] } = {};
 		let output = "";
 		for (const col of cols) {
-			if (col === fileColumnName) continue;
+			if (col === fileColumnName || !selectedCols.contains(col)) continue;
 			const cell = row[col];
-			// console.log({ col, cell });
 
 			if (superchargedFields && typeof cell === "string") {
 				const scField = superchargedFields.find(
@@ -191,16 +190,18 @@ export default class ImportPlugin extends Plugin {
 
 		const json = await this.parseCSV(file[0]);
 		console.log(json);
+		
+		const colNames = Object.keys(json[0]);
 
 		const fileChanges = json.map((row) => {
 			const fileName = row[fileColumnName] as string;
 			return this.getCorrespondingFile(fileName);
 		});
 
-		return { json, fileChanges };
+		return { json, fileChanges, colNames };
 	}
 
-	async importData(json: Row[], selectedFiles: FileChange[]) {
+	async importData(json: Row[], selectedFiles: FileChange[], selectedCols: string[]) {
 		const { fileColumnName } = this.settings;
 		this.superchargedFields = await this.getSuperchargedFields();
 
@@ -214,7 +215,7 @@ export default class ImportPlugin extends Plugin {
 			if (!fileChange) return;
 			const { file } = fileChange;
 
-			const toAppend = this.rowToStr(row);
+			const toAppend = this.rowToStr(row, selectedCols);
 			if (file) {
 				this.appendToFile(file, toAppend);
 			} else {
