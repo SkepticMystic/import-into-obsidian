@@ -7,9 +7,13 @@
 	const { plugin } = modal;
 
 	let selectedFiles: FileChange[] = [];
+	let selectedCols: string[] = [];
+	let detectedCols: string[] = [];
 
 	const promiseBD = plugin.prepareBreakdown().then((bd) => {
 		const [existings, nonExistings, dateds]: FileChange[][] = [[], [], []];
+		detectedCols = bd.colNames.filter((value) => value != plugin.settings.fileColumnName);
+		selectedCols = detectedCols;
 
 		bd.fileChanges.forEach((change) => {
 			if (change.type === FILE_EXISTING) existings.push(change);
@@ -48,10 +52,27 @@
 		}
 	}
 
+	function handleColumnCheck(
+		e: Event & {
+			currentTarget: EventTarget & HTMLInputElement;
+		},
+		column: string
+	) {
+		const { checked } = e.target as HTMLInputElement;
+
+		if (checked) {
+			selectedCols = [...selectedCols, column];
+		} else {
+			selectedCols = selectedCols.filter((f) => {
+				return f != column;
+			});
+		}
+	}
+
 	async function handleButton() {
 		const bd = await promiseBD;
 		const { json } = bd;
-		await plugin.importData(json, selectedFiles);
+		await plugin.importData(json, selectedFiles, selectedCols);
 		modal.close();
 	}
 
@@ -128,6 +149,29 @@
 							on:change={(e) => handleCheck(e, change)}
 						/>
 						<span class="file-change-name">{change.input}</span>
+					</label>
+				</div>
+			{/each}
+		</details>
+		<details class="non-existings">
+			<summary>
+				<h4
+					aria-label="List of detected columns. All selected columns will be imported."
+				>
+					Detected Columns
+				</h4>
+				<span class="count">{detectedCols.length}</span>
+			</summary>
+			<!-- TODO: add a "select/unselect all" button here-->
+			{#each detectedCols as column}
+				<div class="file-change">
+					<label>
+						<input
+							checked={true}
+							type="checkbox"
+							on:change={(e) => handleColumnCheck(e, column)}
+						/>
+						<span class="file-change-name">{column}</span>
 					</label>
 				</div>
 			{/each}

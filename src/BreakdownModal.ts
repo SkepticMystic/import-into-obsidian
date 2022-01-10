@@ -1,12 +1,11 @@
 import { App, Modal } from "obsidian";
 import Breakdown from "./Components/Breakdown.svelte";
-import type DataAnalysisPlugin from "./main";
 import ImportPlugin from "./main";
 
 export class BreakdownModal extends Modal {
 	plugin: ImportPlugin;
 
-	constructor(app: App, plugin: DataAnalysisPlugin) {
+	constructor(app: App, plugin: ImportPlugin) {
 		super(app);
 		this.plugin = plugin;
 	}
