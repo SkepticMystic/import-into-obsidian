@@ -1,4 +1,12 @@
 ## Changelog
+### [0.0.9](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.7...0.0.9) (2022-01-10)
+
+
+### Features
+
+* **BreakdownModal:** :sparkles: Button to toggle All/None of the detectedCols ([ce0c3c0](https://github.com/SkepticMystic/import-into-obsidian/commit/ce0c3c0fefcc23936fcd72318d690216fbe7f304))
+* **ImportData:** :sparkles: Allow selection of columns to import ([2ac7d7c](https://github.com/SkepticMystic/import-into-obsidian/commit/2ac7d7c59c147cd27be2a7abc6e21187e6764bd3)), closes [#3](https://github.com/SkepticMystic/import-into-obsidian/issues/3)
+
 ### [0.0.8](https://github.com/SkepticMystic/import-into-obsidian/compare/0.0.7...0.0.8) (2022-01-10)
 
 
