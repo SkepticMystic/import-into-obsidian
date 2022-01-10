@@ -52,22 +52,8 @@
 		}
 	}
 
-	function handleColumnCheck(
-		e: Event & {
-			currentTarget: EventTarget & HTMLInputElement;
-		},
-		column: string
-	) {
-		const { checked } = e.target as HTMLInputElement;
-
-		if (checked) {
-			selectedCols = [...selectedCols, column];
-		} else {
-			selectedCols = selectedCols.filter((f) => {
-				return f != column;
-			});
-		}
-	}
+	/** Determine whether the button to toggle this array should empty or fill the array */
+	const toNone = (arr: any[]) => arr.length;
 
 	async function handleButton() {
 		const bd = await promiseBD;
@@ -163,15 +149,16 @@
 				<span class="count">{detectedCols.length}</span>
 			</summary>
 			<!-- TODO: add a "select/unselect all" button here-->
-			{#each detectedCols as column}
+			{#each detectedCols as col}
 				<div class="file-change">
 					<label>
 						<input
 							checked={true}
 							type="checkbox"
-							on:change={(e) => handleColumnCheck(e, column)}
+							value={col}
+							bind:group={selectedCols}
 						/>
-						<span class="file-change-name">{column}</span>
+						<span class="file-change-name">{col}</span>
 					</label>
 				</div>
 			{/each}
