@@ -5,14 +5,14 @@
 
 	export let modal: BreakdownModal;
 	const { plugin } = modal;
+	const { fileColumnName } = plugin.settings;
 
 	let selectedFiles: FileChange[] = [];
-	let selectedCols: string[] = [];
-	let detectedCols: string[] = [];
+	let [selectedCols, detectedCols]: string[][] = [[], []];
 
 	const promiseBD = plugin.prepareBreakdown().then((bd) => {
 		const [existings, nonExistings, dateds]: FileChange[][] = [[], [], []];
-		detectedCols = bd.colNames.filter((value) => value != plugin.settings.fileColumnName);
+		detectedCols = bd.colNames.filter((col) => col != fileColumnName);
 		selectedCols = detectedCols;
 
 		bd.fileChanges.forEach((change) => {
@@ -42,8 +42,7 @@
 			selectedFiles = [...selectedFiles, change];
 		} else {
 			selectedFiles = selectedFiles.filter((f) => {
-				const { file, input, type } = f;
-
+				const { file, input } = f;
 				return (
 					input !== change.input &&
 					(!file || !change.file || file.path !== change.file.path)
@@ -61,15 +60,13 @@
 		await plugin.importData(json, selectedFiles, selectedCols);
 		modal.close();
 	}
-
-	$: console.log(selectedFiles);
 </script>
 
-<div class="breakdown">
+<div class="breakdowns">
 	{#await promiseBD}
 		<div>Preparing...</div>
 	{:then { existings, dateds, nonExistings, json }}
-		<details class="existings">
+		<details class="breakdown existings">
 			<summary>
 				<h4 aria-label="An exact match was found for these files">
 					Existing Files
@@ -91,7 +88,7 @@
 				</div>
 			{/each}
 		</details>
-		<details class="dateds">
+		<details class="breakdown dateds">
 			<summary>
 				<h4
 					aria-label="An exact match wasn't found, but a date could be parsed from the name and associated with an existing file"
@@ -117,7 +114,7 @@
 				</div>
 			{/each}
 		</details>
-		<details class="non-existings">
+		<details class="breakdown non-existings">
 			<summary>
 				<h4
 					aria-label="No exact match or daily note was found for these files. A new note will be created."
@@ -139,7 +136,7 @@
 				</div>
 			{/each}
 		</details>
-		<details class="non-existings">
+		<details class="breakdown detected-cols">
 			<summary>
 				<h4
 					aria-label="List of detected columns. All selected columns will be imported."
@@ -147,6 +144,13 @@
 					Detected Columns
 				</h4>
 				<span class="count">{detectedCols.length}</span>
+				<button
+					class="toggle-button"
+					on:click={() => {
+						if (toNone(selectedCols)) selectedCols = [];
+						else selectedCols = detectedCols;
+					}}>{toNone(selectedCols) ? "None" : "All"}</button
+				>
 			</summary>
 			<!-- TODO: add a "select/unselect all" button here-->
 			{#each detectedCols as col}
@@ -178,9 +182,7 @@
 		margin-bottom: 0px;
 	}
 
-	.existings,
-	.non-existings,
-	.dateds {
+	.breakdown {
 		border: 1px solid var(--background-modifier-border);
 		border-radius: 5px;
 		padding: 0px 0px 10px 10px;
@@ -195,6 +197,14 @@
 	}
 	span.count:hover {
 		background-color: var(--interactive-accent);
+	}
+
+	button.toggle-button {
+		padding: 2px 5px 3px 5px;
+	}
+	button.toggle-button:hover {
+		background-color: var(--interactive-accent);
+		cursor: pointer;
 	}
 
 	button.import-button {
